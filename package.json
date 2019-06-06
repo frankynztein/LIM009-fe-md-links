@@ -25,5 +25,13 @@
   "bugs": {
     "url": "https://github.com/frankynztein/LIM009-fe-md-links/issues"
   },
-  "homepage": "https://github.com/frankynztein/LIM009-fe-md-links#readme"
+  "homepage": "https://github.com/frankynztein/LIM009-fe-md-links#readme",
+  "dependencies": {
+    "@babel/preset-env": "^7.4.5",
+    "babel": "^6.23.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "jest": "^24.8.0"
+  }
 }
