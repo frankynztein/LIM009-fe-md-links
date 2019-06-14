@@ -29,7 +29,8 @@
   "homepage": "https://github.com/frankynztein/LIM009-fe-md-links#readme",
   "dependencies": {
     "@babel/preset-env": "^7.4.5",
-    "babel": "^6.23.0"
+    "babel": "^6.23.0",
+    "markdown-it": "^8.4.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
