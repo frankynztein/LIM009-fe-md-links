@@ -28,14 +28,17 @@
   },
   "homepage": "https://github.com/frankynztein/LIM009-fe-md-links#readme",
   "dependencies": {
-    "@babel/preset-env": "^7.4.5",
-    "babel": "^6.23.0",
-    "markdown-it": "^8.4.2"
+    "markdown-it": "^8.4.2",
+    "markdown-link-extractor": "^1.2.1",
+    "marked": "^0.6.2",
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
-    "babel-install": "2.1.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.2.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
     "eslint": "^5.16.0",
     "jest": "^24.8.0"
   }

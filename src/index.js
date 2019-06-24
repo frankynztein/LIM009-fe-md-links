@@ -1,10 +1,11 @@
-import { readFileSync } from 'fs';
 
 const path = require('path');
 const fs = require('fs');
+const fetch = require('node-fetch');
+const marked = require('marked');
 
 // NODE PATH/FS
-export const fileStat = fs.stat;
+export const fileStatSync = fs.statSync;
 export const fileExtName = path.extname;
 export const readDirSync = fs.readdirSync;
 export const rFileSync = fs.readFileSync;
@@ -17,75 +18,60 @@ let ruta4 = 'C:/Users/Estefanía Telis/Documents/Prueba';
 let ruta5 = 'C:/User/Estefanía Telis/Documents/Prueba';
 let ruta6 = 'C:/Users/Estefanía Telis/Documents/GitHub/LIM009-Cipher/README.html';
 let ruta7 = 'C://Users//Estefanía Telis//Documents//Prueba//filereadme1.md';
-let array1 = ['C://Users//Estefanía Telis//Documents//Prueba//filereadme1.md',
-'C://Users//Estefanía Telis//Documents//Prueba//filereadme2.md'];
+let ruta8 = 'C:/Users/Estefanía Telis/Documents/Prueba2/prueba2.md';
+let ruta9 = 'C:/Users/Estefanía Telis/Documents/ProyectoNode';
+let ruta10 = 'C:/Users/Estefanía Telis/Documents/ProyectoNode/tres-enlaces.md';
+let array1 = [ 'C:/Users/Estefanía Telis/Documents/Prueba/filereadme1.md',
+'C:/Users/Estefanía Telis/Documents/Prueba/filereadme2.md',
+'C:/Users/Estefanía Telis/Documents/Prueba/prueba1/prueba1-2/prueba1-2.md' ];
+let array2 = [ {
+href: 'https://google.com/c',
+path: 'C:/Users/Estefanía Telis/Documents/Prueba',
+text: 'Prueba1-2' } ]
+let array3 = [ {
+  href:
+  'https://drive.google.com/drive/folders/1802L6TP0h8Kr1qmDMhn2ZvQaK7cuVpXr?usp=sharing',
+ path:
+  'C:/Users/Estefanía Telis/Documents/GitHub/LIM009-Cipher/README.md',
+ text: 'You can listen the interviews HERE' },
+{ href: 'https://frankynztein.github.io/LIM009-Cipher/src',
+ path:
+  'C:/Users/Estefanía Telis/Documents/GitHub/LIM009-Cipher/README.md',
+ text: 'Try the app HERE.' } ]
+ let array4 = [ { href:
+  'https://codeburst.io/javascript-in-3-minutes-es-2015-let-const-876cda7bd7e7',
+ path: 'C:/Users/Estefanía Telis/Documents/ProyectoNode',
+ text: 'JavaScript in 3 Minutes: ES 2015 — let &amp; const' },
+{ href: 'https://twitter.com/frankynztein/lists/a',
+ path: 'C:/Users/Estefanía Telis/Documents/ProyectoNode',
+ text: 'Twitter page doesn&#39;t exist' },
+{ href: 'https://twiter.com/',
+ path: 'C:/Users/Estefanía Telis/Documents/ProyectoNode',
+ text: 'Este enlace no existe' },
+{ href: 'https://www.youtube.com/watch?v=zT5yR2E-GGU',
+ path: 'C:/Users/Estefanía Telis/Documents/ProyectoNode',
+ text: 'YouTube Bien' },
+{ href: 'https://www.yotuve.com/watch?v=zT5yR2E-GGU',
+ path: 'C:/Users/Estefanía Telis/Documents/ProyectoNode',
+ text: 'YouTube Mal' },
+{ href: 'https://github.com/frankynztein/c',
+ path: 'C:/Users/Estefanía Telis/Documents/ProyectoNode',
+ text: 'GitHub 404' } ]
 
 export const isPathAbsolute = (route) => {
   let absolutePath = path.isAbsolute(route);  
   if (absolutePath) {
-    // console.log('es absoluto', absolutePath);
     return absolutePath;
   } else {
-    // console.log('es relativo', path.resolve(route));
     return path.resolve(route);
   }
 };
 
-// isPathAbsolute(ruta1);
-// isPathAbsolute(ruta3);
-
-// export const validatePath = (path) => {
-//   fs.stat(path, (err, data) => {
-//     if(err) {
-//       console.log(err);
-//       console.log('Ruta inválida.');
-//     } else {
-//       console.log('Ruta válida.');
-//       console.log(data.isFile());
-      
-//       return data.isFile();
-//     }
-//   });
-// };
-
-// validatePath(ruta2);
-// console.log(validatePath(ruta2));
-
-// validatePath(ruta3);
-
+// ES ARCHIVO - SÍNCRONO
 export const isPathAFile = (route) => {
-  return new Promise ((resolve, rejection) => {
-    fileStat(route, (err, data) => {
-      if (err) {
-        rejection(err.code);        
-      } else {
-        resolve(data.isFile());
-      };
-    })
-  })
+    let isItFile = fileStatSync(route);    
+    return isItFile.isFile()
 };
-
-// isPathAFile(ruta1);
-// isPathAFile(ruta2);
-// isPathAFile(ruta3);
-// isPathAFile(ruta5);
-
-// isPathAFile(ruta2).then(result => console.log(result));
-// .catch(err => console.log(err));
-
-
-// export const isPathDirectory = (path) => {
-//   fs.stat(path, (err, data) => {
-//     if (err) {
-//       console.log(err);
-//     } else if (data.isDirectory() === true) {
-//       console.log('Es una carpeta');  
-//     };
-//   });
-// };
-
-// isPathDirectory(ruta1);
-// isPathDirectory(ruta2);
 
 // OBTENER SÓLO LOS ARCHIVOS CON EXTENSIÓN .MD
 export const pathExtName = (route) => {
@@ -93,106 +79,113 @@ export const pathExtName = (route) => {
   return extName;
 };
 
-// pathExtName(ruta2);
-// console.log('pathextname ', pathExtName(ruta2));
-
-// export const pathExtName = (route) => {
-//   let extName = fileExtName(route);
-//   let arrMdFiles = [];
-//   if (extName === '.md') {
-//     arrMdFiles.push(route);
-//   }
-//    return arrMdFiles;
-// };
-
-// pathExtName(ruta2);
-// console.log('pathextname ', pathExtName(ruta2));
-
-// CUANDO LA RUTA ES UN ARCHIVO - ASÍNCRONO
-// export const readDirectory = (route) => {
-//   return new Promise((resolve, rejection) => {
-//     readDir(route, (err, file) => {
-//       if (err) {
-//         rejection(err.code);        
-//       } else {
-//         resolve(file);
-//       };
-//     });
-//   });
-// };
-
-// readDirectory(ruta4).then(result => {  
-//   getMdFilesPaths(ruta4, result);
-//   console.log('getMdFilesPaths', getMdFilesPaths(ruta4, result));
-// });
-
-// LEER UNA CARPETA - SÍNCRONO
-export const readDirectorySync = (route) => {
-  let alreadyReadDir = readDirSync(route);
-  let arrayDir = [];
-  alreadyReadDir.forEach((element) => {
-    let absPathsDir = path.join(route, element);
-    arrayDir.push(absPathsDir);
-  });
-  return arrayDir
-};
-
-readDirectorySync(ruta4);
-
-// LEER ARCHIVO - SÍNCRONO
 export const readFilesSync = (route) => {
-    let alreadyReadFile = rFileSync(route, 'utf8');
-    return alreadyReadFile
+  let alreadyReadFile = rFileSync(route, 'utf8');  
+  return alreadyReadFile;
 };
 
-readFilesSync(ruta7);
+// console.log('readfiles', readFilesSync(ruta10));
+
+// console.log(readFilesSync('C:/Users/Estefanía Telis/Documents/Prueba/filereadme1.md'))
 
 
-// OBTENER RUTAS DE ARCHIVOS .MD EN CARPETAS (LUEGO DE readDirectory)
-// export const getMdFilesPaths = (route, array) => {
-//   let directoryFiles = array;
-//   let arrDirectoryAbsolutePaths = [];
-//   let arrMdFilesAbsolutePaths = []; 
-//   directoryFiles.forEach((fileData) => {
-//     let directoryAbsolutePath = path.join(route, fileData);
-//     arrDirectoryAbsolutePaths.push(directoryAbsolutePath);
-//     return arrDirectoryAbsolutePaths;
-//   });
-//   arrDirectoryAbsolutePaths.forEach((route) => {        
-//     if (path.extname(route) === '.md') {
-//       arrMdFilesAbsolutePaths.push(route);
-//     };
-//   });
-//   return arrMdFilesAbsolutePaths;
-// };
+let markdownText = '[YouTube Bien](https://www.youtube.com/watch?v=zT5yR2E-GGU) [YouTube Mal](https://www.yotuve.com/watch?v=zT5yR2E-GGU) [GitHub 404](https://github.com/frankynztein/c)'
+
+export const markdownLinkExtractor = (markdown, route) => {
+  let links = [];
+  let renderer = new marked.Renderer();
+  renderer.link = function (href, title, text) {
+    links.push({
+      href: href,
+      path: route,
+      text: text.substr(0,50)});
+  };
+  marked(markdown, { renderer: renderer });
+  return links
+};
+
+// console.log(markdownLinkExtractor(markdownText, ruta10))
+
+// console.log('markdown', markdownLinkExtractor(readFilesSync(ruta4), ruta4))
+
+// console.log(readFilesSync(ruta7));
+// console.log(readFilesSync(ruta8));
+
+// LEER TODOS LOS ARCHIVOS DE UNA CARPETA
+export const readAllDirectory = (route) => {
+  let arrDirectory = [];
+  if (isPathAFile(route)) {
+    if (pathExtName(route)) {
+      arrDirectory.push(route);
+    } else {
+      // console.log('No es archivo markdown =>', route);
+    }
+  } else {
+    let folder = readDirSync(route);
+    folder.forEach((element) => {
+      let arrFolder = readAllDirectory(path.join(route, element));
+      arrDirectory = arrDirectory.concat(arrFolder);
+    });
+  };
+  return arrDirectory
+};
+
+// console.log('readAllDirectory', readAllDirectory(ruta9));
+
+let array5 = [{
+  href: 'https://twiter.com/',
+  path: 'C:/Users/Estefanía Telis/Documents/ProyectoNode',
+  text: 'Este enlace no existe'}];
+
+export const validateLinks = (array) => {
+  let urlMd = array.map(key => {
+    return fetch(key.href)
+    .then(res => {
+      if(res.status === 200){
+        key.status = res.status
+        key.statusText = res.statusText
+        return key
+      } else if (res.status === 404){
+        key.status = res.status
+        key.statusText = res.statusText
+        return key
+      }
+      // else {
+      //   key.status = res.status
+      //   key.statusText = res.statusText
+      //   return key
+      // }
+    })
+    .catch(() => {
+      key.status = 'Fail'
+      key.statusText = 'Fail'
+      return key
+    })
+  });
+  return Promise.all(urlMd)    
+};
+
+// validateLinks(array5).then(res => {
+//   console.log(res);
+// })
+// .catch(rej => {
+//   console.log(rej);
+// })
+
+export const threePropertiesObject = (route) => {
+  const result = readAllDirectory(route).map(element => {
+    let mdLinks = markdownLinkExtractor(readFilesSync(element), route);
+    return mdLinks
+  })
+  return [].concat(...result)
+};
+
+// console.log('all', all(ruta9));
 
 
-// LEYENDO ARCHIVO
-// export const readingFiles = (array) => {
-//   let filesArray = array;
-//   console.log('array', array);
-  
-//   filesArray.forEach((fileData) => {    
-//     let alreadyReadFiles = readFiles(fileData, 'utf8', (err, files) => {
-//       if (err) {
-//         console.log(err.code);
-//       } else {
-//         console.log('filedata', fileData);
-//       };
-      
-//     });
-//   });
-  // readFiles(array, 'utf8', (err, data) => {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     // console.log(data);
-  //     const regularExp = //;
-  //     console.log(regularExp.exec(data));
-      
-  //   }
-  // });
-// };
-
-// console.log('readingFiles', readingFiles(array1));
-
+// validateLinks(threePropertiesObject(ruta9)).then(res => {
+//   console.log(res);
+// })
+// .catch(rej => {
+//   console.log(rej);
+// })
