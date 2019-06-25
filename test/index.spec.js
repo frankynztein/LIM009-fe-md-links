@@ -176,9 +176,16 @@ describe('validateLinks', () => {
     });
 
     it('Debería returnar el texto Fail dentro de las propiedades status y statusText cuando el enlace que evalúa no existe', () => {
-      return validateLinks(array4).catch(result => {
-        expect(result).toEqual(array5)
-      });
+      // return validateLinks(array4).catch(result => {
+      //   expect(result).toEqual(array5)
+      // });
+
+      try {
+        validateLinks(array4)
+      } catch (error) {
+        expect(error).toBe(error)
+      };
+
     });
 });
 

@@ -52,6 +52,13 @@ let result1 = [ {
  status: 404,
  statusText: 'Not Found' } ]
 
+ let result3 = [{
+ href: 'https://twiter.com/frankynztein/lists/b',
+ path: 'C:/Users/Estefanía Telis/Documents/ProyectoNode/prueba-mdlinks.md',
+ text: 'Broken Twitter',
+ status: 'Fail',
+ statusText: 'Fail' }]
+
 
 describe('mdLinks', () => {
   it('Debería retornar un array de objetos con 3 propiedades cuando validate es false', () => {
@@ -65,16 +72,28 @@ describe('mdLinks', () => {
       expect(result).toEqual(result2)
     });
   });
+
+  it('Debería retornar Fail en las propiedades status y statusText', () => {
+    mdLinks('C:/Users/Estefanía Telis/Documents/ProyectoNode/prueba-mdlinks.md', {validate: true}).catch(result => {
+      expect(result).toEqual(result3)
+    });
+  });
+
+  // it('Debería retornar mensaje de error', () => {
+  //   mdLinks('C:/Uses/Estefanía Telis/Documents/ProyectoNode/prueba-mdlinks.md', {validate: true}).catch(result => {
+  //     expect(result).toEqual('')
+  //   });
+  // });
 });
 
 describe('totalUniqueElements', () => {
   it('Debería retornar el total de enlaces y cuántos son únicos', () => {
-    expect(totalUniqueElements(result1)).toEqual(`Total: 6, Unique: 6`)
+    expect(totalUniqueElements(result1)).toEqual(`Total: 6 \nUnique: 6`)
   });
 });
 
 describe('totalUniqueBrokenElements', () => {
   it('Debería retornar el total de enlaces, cuántos son únicos y cuáles están rotos', () => {
-    expect(totalUniqueBrokenElements(result2)).toEqual(`Total: 6, Unique: 6, BrokenLinks: 4`)
+    expect(totalUniqueBrokenElements(result2)).toEqual(`Total: 6 \nUnique: 6 \nBrokenLinks: 4`)
   });
 });

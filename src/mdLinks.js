@@ -76,7 +76,10 @@ export const mdLinks = (path, options) => {
   });
 };
 
-// mdLinks('C:/Users/Estefanía Telis/Documents/ProyectoNode', { validate : false }).then(res => { console.log('invocando funcion', res);
+// mdLinks('C:/Uses/Estefanía Telis/Documents/ProyectoNode/prueba-mdlinks.md', { validate : true }).then(res => { console.log('invocando funcion', res);
+// }).catch(err => {console.log(err);})
+
+// mdLinks('C:/Users/Estefanía Telis/Documents/ProyectoNode/', { validate : true }).then(res => { console.log('invocando funcion', res);
 // }).catch(err => {console.log(err);})
 
 

@@ -141,20 +141,30 @@ export const validateLinks = (array) => {
   let urlMd = array.map(key => {
     return fetch(key.href)
     .then(res => {
-      if(res.status === 200){
-        key.status = res.status
-        key.statusText = res.statusText
-        return key
-      } else if (res.status === 404){
-        key.status = res.status
-        key.statusText = res.statusText
-        return key
-      }
+      // if(res.status === 200){
+      //   key.status = res.status
+      //   key.statusText = res.statusText
+      //   return key
+      // } else if (res.status === 404){
+      //   key.status = res.status
+      //   key.statusText = res.statusText
+      //   return key
+      // }
       // else {
       //   key.status = res.status
       //   key.statusText = res.statusText
       //   return key
       // }
+
+      if(res.status > 199 && res.status < 300) {
+        key.status = res.status
+        key.statusText = res.statusText
+        return key
+      } else {
+        key.status = res.status
+        key.statusText = res.statusText
+        return key
+        }
     })
     .catch(() => {
       key.status = 'Fail'
@@ -165,7 +175,7 @@ export const validateLinks = (array) => {
   return Promise.all(urlMd)    
 };
 
-// validateLinks(array5).then(res => {
+// validateLinks(array4).then(res => {
 //   console.log(res);
 // })
 // .catch(rej => {

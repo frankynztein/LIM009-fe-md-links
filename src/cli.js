@@ -1,6 +1,8 @@
+#!/usr/bin/env node
 import { mdLinks, totalUniqueElements, totalUniqueBrokenElements } from "./mdLinks.js";
 
-const mdLinksCli = (route, option1, option2) => {
+
+export const mdLinksCli = (route, option1, option2) => {
   if (route != undefined && option1 === undefined && option2 === undefined) {
     console.log('Sólo ruta ');
     return mdLinks(route, { validate: false })
@@ -32,7 +34,7 @@ const mdLinksCli = (route, option1, option2) => {
   }
 };
 
-mdLinksCli('C:/Users/Estefanía Telis/Documents/ProyectoNode', '--validate', '--stats').then(result => console.log(result))
+mdLinksCli('C:/Users/Estefanía Telis/Documents/ProyectoNode', undefined, undefined).then(result => console.log(result))
 .catch(err => console.log(err))
 
 // mdLinksCli('C:/Users/Estefanía Telis/Documents/ProyectoNode', undefined, undefined);
