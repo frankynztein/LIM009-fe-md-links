@@ -1,5 +1,5 @@
 {
-  "name": "md-links",
+  "name": "md-links-frankynztein",
   "version": "1.0.0",
   "description": "Creación de librería en JavaScript. Cuarto proyecto de Laboratoria - Lima.",
   "main": "./lib/mdLinks.js",
@@ -31,6 +31,7 @@
     "markdown-it": "^8.4.2",
     "markdown-link-extractor": "^1.2.1",
     "marked": "^0.6.2",
+    "md-links": "github:frankynztein/LIM009-fe-md-links",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
