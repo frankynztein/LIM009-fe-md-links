@@ -2,7 +2,7 @@
   "name": "md-links",
   "version": "1.0.0",
   "description": "Creación de librería en JavaScript. Cuarto proyecto de Laboratoria - Lima.",
-  "main": "index.js",
+  "main": "./lib/mdLinks.js",
   "directories": {
     "test": "test"
   },
@@ -43,5 +43,8 @@
     "fetch-mock": "^7.3.3",
     "jest": "^24.8.0",
     "mock-fs": "^4.10.1"
+  },
+  "bin": {
+    "md-links": "./lib/cli-launch.js"
   }
 }

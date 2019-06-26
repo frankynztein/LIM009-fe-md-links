@@ -1,46 +1,41 @@
 import { mdLinksCli } from '../src/cli.js';
-import { process } from 'process';
-import { path } from 'path';
-import { mock } from 'mock-fs';
+import { path } from "path";
 
-import { fetchMock } from '../__mock__/node-fetch.js';
+// const arguments = process.argv.slice(2);
 
-
-// fetchMock.config.sendAsJson = false;
-
-fetchMock.mock('https://www.youtube.com/watch?v=zT5yR2E-GGU', 200)
-fetchMock.mock('https://www.yotuve.com/watch?v=zT5yR2E-GGU', 'Fail')
-fetchMock.mock('https://github.com/frankynztein/c', 404)
-
-  beforeEach(()=> {
-    mock({
-      'fake/mock/dir': {
-        'some-file.md': '[Un enlace de Youtube que funciona](https://www.youtube.com/watch?v=zT5yR2E-GGU)',
-        'empty-folder': {},
-        'another-folder': {
-          'another-file.md': '[Not found message](https://github.com/frankynztein/c). Y otro enlace por aquí [Que no existe](https://www.yotuve.com/watch?v=zT5yR2E-GGU)'
-        }
-      },
-      'path/to/empty-file.md': 'Un archivo sin enlaces'
-    });
-  });
-  afterEach(mock.restore);
-
+let result1 = 'https://twiter.com/frankynztein/lists/b - C:/Users/Estefanía Telis/Documents/ProyectoNode/prueba-mdlinks.md - Broken Twitter'
+let result2 = 'https://twiter.com/frankynztein/lists/b - C:/Users/Estefanía Telis/Documents/ProyectoNode/prueba-mdlinks.md - Fail - Fail - Broken Twitter'
+let result3 = 'Total: 7 \nUnique: 7'
+let result4 = 'Total: 7 \nUnique: 7 \nBrokenLinks: 5'
 
 describe('mdLinksCli', () => {
-  beforeAll(() => fetchMock.config.fallbackToNetwork = true);
-
-  it('Debería ser una función', () => {
-    expect(typeof mdLinksCli).toBe('function')
+  it('Debería retornar una línea de texto con href, path y text de cada enlace cuando sólo paso una ruta como argumento', () => {
+    return mdLinksCli('C:/Users/Estefanía Telis/Documents/ProyectoNode/prueba-mdlinks.md', undefined, undefined).then(result => {
+      expect(result).toEqual(result1)
+    });
   });
 
-  afterAll(() => fetchMock.config.fallbackToNetwork = false);
+  it('Debería retornar una línea de texto con href, path, text, status y statusText cuando paso ruta y --validate como argumentos', () => {
+    return (mdLinksCli('C:/Users/Estefanía Telis/Documents/ProyectoNode/prueba-mdlinks.md', '--validate', undefined).then(result => {
+      expect(result).toEqual(result2)
+    }));
+  });
+
+  it('Debería retornar una línea de texto con el total de enlaces encontrados y cuántos son únicos cuando paso la ruta y --stats como argumentos', () => {
+    return(mdLinksCli('C:/Users/Estefanía Telis/Documents/ProyectoNode', '--stats', undefined)).then(result => {
+      expect(result).toEqual(result3)
+    });
+  });
+
+  it('Debería retornar una línea de texto con el total de enlaces encontrados, cuántos son únicos y cuántos están rotos cuando paso la ruta, --validate y --stats como argumentos', () =>{
+    return(mdLinksCli('C:/Users/Estefanía Telis/Documents/ProyectoNode', '--validate', '--stats').then(result => {
+      expect(result).toEqual(result4)
+    }));
+  });
+
+  // it('Probando otra cosa', () => {
+  //   mdLinksCli(path.join(process.cwd(), 'ProyectoNode', 'prueba-mdlinks.md'), {validate: false}).then(result => {
+  //     expect(result).toBe(`href: , path: ${join(`${process.cwd()}/folder/readmeTuto.md`)} , text : LABORATORIA\n`)
+  //   })
+  // })
 });
-
-// describe('mdLinksCli', () => {
-//   it('Debería ser una función', () => {
-//     expect(typeof mdLinksCli).toBe('function')
-//   });
-
-//   it('Debería retornar un ')
-// });
