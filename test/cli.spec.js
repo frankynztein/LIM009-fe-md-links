@@ -1,41 +1,76 @@
+import  mock  from 'mock-fs';
 import { mdLinksCli } from '../src/cli.js';
-import { path } from "path";
+import fetchMock from '../__mocks__/node-fetch.js'
 
-// const arguments = process.argv.slice(2);
+fetchMock
+  .mock('https://www.google.com/', 200)
+  .mock('https://github.com/frankynztein/c', 404)
+  .mock('https://www.yotuveeeeee.com/watch?v=zT5yR2E', 'Fail')
 
-let result1 = 'https://twiter.com/frankynztein/lists/b - C:/Users/Estefanía Telis/Documents/ProyectoNode/prueba-mdlinks.md - Broken Twitter'
-let result2 = 'https://twiter.com/frankynztein/lists/b - C:/Users/Estefanía Telis/Documents/ProyectoNode/prueba-mdlinks.md - Fail - Fail - Broken Twitter'
-let result3 = 'Total: 7 \nUnique: 7'
-let result4 = 'Total: 7 \nUnique: 7 \nBrokenLinks: 5'
+beforeAll(() => {
+  mock({
+    '/fakePath': {
+      'mdFile.md': '[Working Google](https://www.google.com/) [Not found Github](https://github.com/frankynztein/c)',
+      'otherPath': {
+        'file.html': '',
+        'anotherFile.md':'[Fail Youtube](https://www.yotuveeeeee.com/watch?v=zT5yR2E) [Working Google](https://www.google.com/)'
+      },
+      'someFile.md': '[Not found Github](https://github.com/frankynztein/c)' 
+    },
+  });
+})
+
+afterAll(mock.restore)
+
+const result1 = `https://www.google.com/ - \\fakePath\\mdFile.md - Working Google
+https://github.com/frankynztein/c - \\fakePath\\mdFile.md - Not found Github
+https://www.yotuveeeeee.com/watch?v=zT5yR2E - \\fakePath\\otherPath\\anotherFile.md - Fail Youtube
+https://www.google.com/ - \\fakePath\\otherPath\\anotherFile.md - Working Google
+https://github.com/frankynztein/c - \\fakePath\\someFile.md - Not found Github`;
+
+const result2 = `https://www.google.com/ - \\fakePath\\mdFile.md - OK - 200 - Working Google
+https://github.com/frankynztein/c - \\fakePath\\mdFile.md - Not Found - 404 - Not found Github
+https://www.yotuveeeeee.com/watch?v=zT5yR2E - \\fakePath\\otherPath\\anotherFile.md - OK - 200 - Fail Youtube
+https://www.google.com/ - \\fakePath\\otherPath\\anotherFile.md - OK - 200 - Working Google
+https://github.com/frankynztein/c - \\fakePath\\someFile.md - Not Found - 404 - Not found Github`
+
+const result3 = `Total: 5 \nUnique: 3`
+
+const result4 = `Total: 5 \nUnique: 3 \nBrokenLinks: 2`
 
 describe('mdLinksCli', () => {
-  it('Debería retornar una línea de texto con href, path y text de cada enlace cuando sólo paso una ruta como argumento', () => {
-    return mdLinksCli('C:/Users/Estefanía Telis/Documents/ProyectoNode/prueba-mdlinks.md', undefined, undefined).then(result => {
+  it('Debería retornar línea de texto con href, path y texto de enlaces encontrados', (done) => {
+    mdLinksCli('/fakePath').then(result => {
       expect(result).toEqual(result1)
+      done()
     });
   });
 
-  it('Debería retornar una línea de texto con href, path, text, status y statusText cuando paso ruta y --validate como argumentos', () => {
-    return (mdLinksCli('C:/Users/Estefanía Telis/Documents/ProyectoNode/prueba-mdlinks.md', '--validate', undefined).then(result => {
+  it('Debería retornar línea de texto con href, path, texto, status y statusTex de enlaces encontrados cuando paso ruta y --validate como argumentos', (done) => {
+    mdLinksCli('/fakePath', '--validate').then(result => {
       expect(result).toEqual(result2)
-    }));
-  });
-
-  it('Debería retornar una línea de texto con el total de enlaces encontrados y cuántos son únicos cuando paso la ruta y --stats como argumentos', () => {
-    return(mdLinksCli('C:/Users/Estefanía Telis/Documents/ProyectoNode', '--stats', undefined)).then(result => {
-      expect(result).toEqual(result3)
+      done()
     });
   });
 
-  it('Debería retornar una línea de texto con el total de enlaces encontrados, cuántos son únicos y cuántos están rotos cuando paso la ruta, --validate y --stats como argumentos', () =>{
-    return(mdLinksCli('C:/Users/Estefanía Telis/Documents/ProyectoNode', '--validate', '--stats').then(result => {
-      expect(result).toEqual(result4)
-    }));
+  it('Debería retornar línea de texto con Total y Unique cuando paso ruta y --stats como argumentos', (done) => {
+    mdLinksCli('/fakePath', '--stats').then(result => {
+      expect(result).toEqual(result3)
+      done()
+    });
   });
 
-  // it('Probando otra cosa', () => {
-  //   mdLinksCli(path.join(process.cwd(), 'ProyectoNode', 'prueba-mdlinks.md'), {validate: false}).then(result => {
-  //     expect(result).toBe(`href: , path: ${join(`${process.cwd()}/folder/readmeTuto.md`)} , text : LABORATORIA\n`)
-  //   })
-  // })
-});
+  it('Debería retornar línea de texto con Total, Unique y BrokenLinks cuando paso ruta, --validate y --stats como argumentos', (done) => {
+    mdLinksCli('/fakePath', '--validate', '--stats').then(result => {
+      expect(result).toEqual(result4)
+      done()
+    });
+  });
+
+  // it('Debería retornar ERROR', (done) => {
+  //   mdLinksCli('/fakePat', '--validate', '--stats').catch(err => {
+  //     expect(err).toEqual('')
+  //     done()
+  //   });
+  // });
+})

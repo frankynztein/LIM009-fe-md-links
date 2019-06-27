@@ -83,13 +83,6 @@ export const readFilesSync = (route) => {
   return alreadyReadFile;
 };
 
-// console.log('readfiles', readFilesSync(ruta10));
-
-// console.log(readFilesSync('C:/Users/Estefanía Telis/Documents/Prueba/filereadme1.md'))
-
-
-let markdownText = '[YouTube Bien](https://www.youtube.com/watch?v=zT5yR2E-GGU) [YouTube Mal](https://www.yotuve.com/watch?v=zT5yR2E-GGU) [GitHub 404](https://github.com/frankynztein/c)'
-
 export const markdownLinkExtractor = (markdown, route) => {
   let links = [];
   let renderer = new marked.Renderer();
@@ -103,13 +96,6 @@ export const markdownLinkExtractor = (markdown, route) => {
   return links
 };
 
-// console.log(markdownLinkExtractor(markdownText, ruta10))
-
-// console.log('markdown', markdownLinkExtractor(readFilesSync(ruta4), ruta4))
-
-// console.log(readFilesSync(ruta7));
-// console.log(readFilesSync(ruta8));
-
 // LEER TODOS LOS ARCHIVOS DE UNA CARPETA
 export const readAllDirectory = (route) => {
   let arrDirectory = [];
@@ -117,7 +103,6 @@ export const readAllDirectory = (route) => {
     if (pathExtName(route)) {
       arrDirectory.push(route);
     } else {
-      // console.log('No es archivo markdown =>', route);
     }
   } else {
     let folder = readDirSync(route);
@@ -128,8 +113,6 @@ export const readAllDirectory = (route) => {
   };
   return arrDirectory
 };
-
-// console.log('readAllDirectory', readAllDirectory(ruta9));
 
 let array5 = [{
   href: 'https://twiter.com/',
@@ -159,27 +142,12 @@ export const validateLinks = (array) => {
   return Promise.all(urlMd)    
 };
 
-// validateLinks(array4).then(res => {
-//   console.log(res);
-// })
-// .catch(rej => {
-//   console.log(rej);
-// })
-
 export const threePropertiesObject = (route) => {
   const result = readAllDirectory(route).map(element => {
-    let mdLinks = markdownLinkExtractor(readFilesSync(element), route);
+    
+    let mdLinks = markdownLinkExtractor(readFilesSync(element), element);
     return mdLinks
   })
+  
   return [].concat(...result)
 };
-
-// console.log('all', all(ruta9));
-
-
-// validateLinks(threePropertiesObject(ruta9)).then(res => {
-//   console.log(res);
-// })
-// .catch(rej => {
-//   console.log(rej);
-// })

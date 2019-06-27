@@ -1,5 +1,5 @@
 {
-  "name": "md-links-fran",
+  "name": "md-links",
   "version": "1.0.0",
   "description": "Creación de librería en JavaScript. Cuarto proyecto de Laboratoria - Lima.",
   "main": "./lib/mdLinks.js",
@@ -39,7 +39,7 @@
     "@babel/core": "^7.4.5",
     "@babel/plugin-transform-modules-commonjs": "^7.2.0",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^23.6.0",
+    "babel-jest": "^24.8.0",
     "eslint": "^5.16.0",
     "fetch-mock": "^7.3.3",
     "jest": "^24.8.0",

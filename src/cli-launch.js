@@ -1,9 +1,5 @@
 #!/usr/bin/env node
 import { mdLinksCli } from "./cli.js";
-import { pathExtName } from "./index.js";
-// const args = process.argv;
-
-// const [,, ...args] = process.argv
 
 const route = process.argv[2];
 const option1 = process.argv[3];
