@@ -17,6 +17,8 @@ además de la ruta en la que se encuentran.
 
 ** Diagrama de flujo **
 
+![Diagrama de flujo - mdLinks](https://github.com/frankynztein/LIM009-fe-md-links/blob/master/mdLinks%20-%20Diagrama.png "Diagrama de flujo")
+
 
 ## mdLinks - API
 
