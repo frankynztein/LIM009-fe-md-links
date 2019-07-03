@@ -1,1 +1,0 @@
-Este es un archivo markdown sin enlaces.

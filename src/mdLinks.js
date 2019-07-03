@@ -1,4 +1,5 @@
-import { validateLinks, threePropertiesObject } from "./index.js";
+import path from "path";
+import { validateLinks, getLinksObject } from "./index.js";
 
 let arrayMdLinks = [ {
  href: 'https://codeburst.io/javascript-in-3-minutes-es-2015-let-const-876cda7bd7e7',
@@ -17,6 +18,9 @@ let arrayMdLinks = [ {
  path: 'C:/Users/Estefanía Telis/Documents/ProyectoNode',
  text: 'YouTube Mal' },
 { href: 'https://github.com/frankynztein/c',
+ path: 'C:/Users/Estefanía Telis/Documents/ProyectoNode',
+ text: 'GitHub 404' },
+ { href: 'https://github.com/frankynztein/c',
  path: 'C:/Users/Estefanía Telis/Documents/ProyectoNode',
  text: 'GitHub 404' }]
 
@@ -65,10 +69,11 @@ let arrayValidate = [{
 export const mdLinks = (path, options) => {
   return new Promise((resolve, reject) => {
     try {
-      if (options.validate === true) {
-        resolve(validateLinks(threePropertiesObject(path)))
+      const links = getLinksObject(path)
+      if (options && options.validate === true) {
+        resolve(validateLinks(links))
       } else {
-        resolve(threePropertiesObject(path))
+        resolve(links)
       }
     } catch (error) {
       reject(error)
@@ -76,8 +81,8 @@ export const mdLinks = (path, options) => {
   });
 };
 
-// mdLinks('C:/Uses/Estefanía Telis/Documents/ProyectoNode/prueba-mdlinks.md', { validate : true }).then(res => { console.log('invocando funcion', res);
-// }).catch(err => {console.log(err);})
+// mdLinks(path.join(process.cwd(), 'fakePath', 'mdFile.md'), { validate : false }).then(res => { console.log('invocando funcion', res);
+// }).catch(err => {console.log('err', err);})
 
 // mdLinks('C:/Users/Estefanía Telis/Documents/ProyectoNode/', { validate : true }).then(res => { console.log('invocando funcion', res);
 // }).catch(err => {console.log(err);})
@@ -89,6 +94,7 @@ export const totalUniqueElements = (array) => {
   });
 
   const uniqueElements = totalElements.filter((item,index,arr) => {
+    
     return arr.indexOf(item) === index;
   });
 
@@ -108,13 +114,13 @@ export const totalUniqueBrokenElements = (array) => {
   });
   
   const brokenLinks = array.filter(elem => {
-   if(elem.status === 'Not Found' || elem.status === 'Fail') {
-    return elem.status
-  } else if (elem.status >= 400) {
-      return elem.status
-  };
+    if(elem.statusText === 'Not Found' || elem.statusText === 'Fail') {
+      return true
+    }
+    return false;
   });
-    return `Total: ${totalElements.length} \nUnique: ${uniqueElements.length} \nBrokenLinks: ${brokenLinks.length}`
+  
+  return `Total: ${totalElements.length} \nUnique: ${uniqueElements.length} \nBrokenLinks: ${brokenLinks.length}`
 };
 
 // console.log('totaluniquebroken', totalUniqueBrokenElements(arrayValidate));
