@@ -10,7 +10,6 @@ export const readDirSync = fs.readdirSync;
 export const rFileSync = fs.readFileSync;
 
 // FUNCTIONS
-
 export const isPathAbsolute = (route) => {
   let absolutePath = path.isAbsolute(route);  
   if (absolutePath) {
@@ -29,7 +28,6 @@ export const isPathAFile = (route) => {
 // OBTENER SÓLO LOS ARCHIVOS CON EXTENSIÓN .MD
 export const isFileMd = (route) => {
   let extName = fileExtName(route).toLowerCase() === '.md' //.MD
-  
   return extName;
 };
 
@@ -93,10 +91,8 @@ export const validateLinks = (array) => {
 
 export const getLinksObject = (route) => {
   const result = readAllDirectory(route).map(element => {
-    
     let mdLinks = markdownLinkExtractor(readFilesSync(element), element);
     return mdLinks
-  })
-  
+  });
   return [].concat(...result)
 };

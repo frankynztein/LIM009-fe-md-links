@@ -1,6 +1,5 @@
 import { mdLinks, totalUniqueElements, totalUniqueBrokenElements } from "./mdLinks.js";
 
-
 export const mdLinksCli = (route, option1, option2) => {
   if (route != undefined && option1 === undefined && option2 === undefined) {
     return mdLinks(route, { validate: false })
